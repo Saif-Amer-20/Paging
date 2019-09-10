@@ -28,8 +28,7 @@ namespace PagingTask.Controllers
         [HttpGet("{page}/{limit}")]
         public ActionResult GetProjects(int? page, int? limit)
         {
-            int total;
-            var records = GetJsonData(page, limit, out total);
+            var records = GetJsonData(page, limit, out int total);
 
             var result = Json(new { records, total });
 
