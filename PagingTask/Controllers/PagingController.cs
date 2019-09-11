@@ -25,27 +25,27 @@ namespace PagingTask.Controllers
          
         }
 
-        [HttpGet("{page}/{limit}")]
-        public ActionResult GetProjects(int? page, int? limit)
+        [HttpGet("{page}")]
+        public ActionResult GetProjects(int? page)
         {
-            var records = GetJsonData(page, limit, out int total);
+            var records = GetJsonData(page, out int total);
 
             var result = Json(new { records, total });
 
             return result;
         }
 
-        public List<Project> GetJsonData(int? page, int? limit, out int total)
+        public List<Project> GetJsonData(int? page,  out int total)
         {
-            var records = _context.Projects.Select(p => p).AsQueryable();
+            var records = _context.Projects.OrderBy(p=>p.Name).AsQueryable();
 
             total = records.Count();
 
       
-            if (page.HasValue && limit.HasValue)
+            if (page.HasValue )
             {
-                int start = (page.Value - 1) * limit.Value;
-                records = records.Skip(start).Take(limit.Value);
+                int start = (page.Value - 1) * 10;
+                records = records.Skip(start).Take(10);
             }
 
 
